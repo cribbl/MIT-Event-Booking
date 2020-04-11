@@ -2,7 +2,18 @@ import React from 'react'
 import { Card, CardTitle, CardText } from 'material-ui/Card'
 import Divider from 'material-ui/Divider'
 import CircularProgress from 'material-ui/CircularProgress'
+import { List, ListItem } from 'material-ui/List'
+import Subheader from 'material-ui/Subheader'
+import CheckCircleIcon from 'material-ui/svg-icons/action/check-circle'
 
+const Subtitle = (props) => {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <h5> {props.title} </h5>
+      {props.approved && <CheckCircleIcon style={{ color: '#558B2F' }} hoverColor={'#33691E'} data-tip='Approved' /> }
+    </div>
+  )
+}
 function getRoomsString (rooms) {
   let roomList = ''
   // determines the academic block according to the first digit as array index
@@ -29,23 +40,60 @@ export const EventDetails = (props) => {
   if (props.isRoomSelected) {
     if (props.fetchingEventData) {
       return (
-        <div>
+        <div style={{ margin: 'auto', width: 300 }}>
           <p>Fetching Event...</p>
           <CircularProgress size={60} />
         </div>
       )
     } else {
+      console.log(props.eventDetails)
       return (
-        <Card>
-          <CardTitle style={{ fontWeight: 'bold' }} title={props.eventDetails.clubName} subtitle={props.eventDetails.title} />
-          <CardText>
-            <p><b> Starts </b> {props.eventDetails.startDate}</p>
-            <Divider style={{ margin: '5px' }} />
-            <p><b> Ends </b> {props.eventDetails.endDate}</p>
-            <Divider style={{ margin: '5px' }} />
-            <p><b> Rooms </b> {getRoomsString(props.eventDetails.rooms)} </p>
-            <Divider style={{ margin: '5px' }} />
-            <p><b> Contact </b> {props.eventDetails.booker_name} : {props.eventDetails.booker_contact} </p>
+        <Card style={{}}>
+          <CardTitle style={{ fontWeight: 'bold', textAlign: 'center' }} title={props.eventDetails.clubName} subtitle={<Subtitle title={props.eventDetails.title} approved={props.eventDetails.SO_appr === 'approved'} />} />
+          <CardText style={{ display: 'flex', flexDirection: props.isMobile ? 'column' : 'row', justifyContent: 'space-between' }}>
+            <div>
+              <List>
+                <div style={{ display: 'flex', flexDirection: props.isMobile ? 'column' : 'row' }}>
+                  <Subheader> Start </Subheader>
+                  <ListItem
+                    primaryText={props.eventDetails.startDate}
+                    disabled
+                    style={{ minWidth: 300 }}
+                  />
+                </div>
+                <Divider />
+                <div style={{ display: 'flex', flexDirection: props.isMobile ? 'column' : 'row' }}>
+                  <Subheader> End </Subheader>
+                  <ListItem
+                    primaryText={props.eventDetails.endDate}
+                    disabled
+                    style={{ minWidth: 300 }}
+                  />
+                <Divider />
+                </div>
+              </List>
+            </div>
+            <div>
+              <List>
+                <div style={{ display: 'flex', flexDirection: props.isMobile ? 'column' : 'row' }}>
+                  <Subheader> Rooms </Subheader>
+                  <ListItem
+                    primaryText={getRoomsString(props.eventDetails.rooms)}
+                    disabled
+                    style={{ minWidth: 300 }}
+                  />
+                </div>
+                <Divider style={{ margin: '5px' }} />
+                <div style={{ display: 'flex', flexDirection: props.isMobile ? 'column' : 'row' }}>
+                  <Subheader> Contact </Subheader>
+                  <ListItem
+                    primaryText={props.eventDetails.booker_name + ': ' + props.eventDetails.booker_contact}
+                    disabled
+                    style={{ minWidth: 300 }}
+                  />
+                </div>
+              </List>
+            </div>
           </CardText>
         </Card>
       )
