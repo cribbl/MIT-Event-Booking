@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^0.17.1",
+    "axios": "^0.21.1",
     "env-cmd": "^8.0.2",
     "firebase": "^4.13.1",
     "history": "^4.7.2",
